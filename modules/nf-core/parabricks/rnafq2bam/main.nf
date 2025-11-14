@@ -9,29 +9,26 @@ process PARABRICKS_RNAFQ2BAM {
 
     input:
     tuple val(meta),  path(reads)
-    tuple val(meta1), path(fasta)
-    tuple val(meta2), path(index)
-    tuple val(meta3), path(genome_lib_dir)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(index)
 
     output:
-    tuple val(meta), path('*Log.final.out')   , emit: log_final
-    tuple val(meta), path('*Log.out')         , emit: log_out
-    tuple val(meta), path('*Log.progress.out'), emit: log_progress
-    path  "versions.yml"                      , emit: versions
+    tuple val(meta), path("${prefix}.Log.final.out")                    , emit: log_final
+    path  "versions.yml"                                                , emit: versions
 
-    tuple val(meta), path("${prefix}.bam")                           , optional:true, emit: bam
-    tuple val(meta), path("${prefix}.sortedByCoord.out.bam")         , optional:true, emit: bam_sorted
-    tuple val(meta), path("${prefix}.Aligned.sortedByCoord.out.bam") , optional:true, emit: bam_sorted_aligned
-    tuple val(meta), path('*toTranscriptome.out.bam')                , optional:true, emit: bam_transcript
-    tuple val(meta), path('*Aligned.unsort.out.bam')                 , optional:true, emit: bam_unsorted
-    tuple val(meta), path('*fastq.gz')                               , optional:true, emit: fastq
-    tuple val(meta), path('*.tab')                                   , optional:true, emit: tab
-    tuple val(meta), path('*.SJ.out.tab')                            , optional:true, emit: spl_junc_tab
-    tuple val(meta), path('*.ReadsPerGene.out.tab')                  , optional:true, emit: read_per_gene_tab
-    tuple val(meta), path('*.out.junction')                          , optional:true, emit: junction
-    tuple val(meta), path('*.out.sam')                               , optional:true, emit: sam
-    tuple val(meta), path('*.wig')                                   , optional:true, emit: wig
-    tuple val(meta), path('*.bg')                                    , optional:true, emit: bedgraph                    
+    tuple val(meta), path("${prefix}.bam")                              , optional:true, emit: bam
+    tuple val(meta), path("${prefix}.sortedByCoord.out.bam")            , optional:true, emit: bam_sorted
+    tuple val(meta), path("${prefix}.Aligned.sortedByCoord.out.bam")    , optional:true, emit: bam_sorted_aligned
+    tuple val(meta), path('*toTranscriptome.out.bam')                   , optional:true, emit: bam_transcript
+    tuple val(meta), path('*Aligned.unsort.out.bam')                    , optional:true, emit: bam_unsorted
+    tuple val(meta), path('*fastq.gz')                                  , optional:true, emit: fastq
+    tuple val(meta), path('*.tab')                                      , optional:true, emit: tab
+    tuple val(meta), path('*.SJ.out.tab')                               , optional:true, emit: spl_junc_tab
+    tuple val(meta), path('*.ReadsPerGene.out.tab')                     , optional:true, emit: read_per_gene_tab
+    tuple val(meta), path('*.out.junction')                             , optional:true, emit: junction
+    tuple val(meta), path('*.out.sam')                                  , optional:true, emit: sam
+    tuple val(meta), path('*.wig')                                      , optional:true, emit: wig
+    tuple val(meta), path('*.bg')                                       , optional:true, emit: bedgraph
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,28 +39,22 @@ process PARABRICKS_RNAFQ2BAM {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     def in_fq_command = meta.single_end ? "--in-se-fq ${reads}" : "--in-fq ${reads}"
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
 
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    cp ${fasta} \$INDEX
-
     pbrun \\
         rna_fq2bam  \\
-        --ref \$INDEX \\
+        --ref ${fasta} \\
         ${in_fq_command} \\
         --output-dir . \\
-        --genome-lib-dir ${genome_lib_dir} \\
+        --genome-lib-dir ${index} \\
         --out-bam ${prefix}.bam \\
+        --logfile ${prefix}.Log.final.out \\
         ${num_gpus} \\
         ${args}
-
-    if [[ "${args}" == *"--out-chim-type"* ]]; then
-        mv ${prefix}/Chimeric.out.junction .
-    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -76,17 +67,12 @@ process PARABRICKS_RNAFQ2BAM {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def chimeric_output = args.contains("--out-chim-type") ? "touch Chimeric.out.junction" : ""
-    def qc_metrics_output = args.contains("--out-qc-metrics-dir") ? "mkdir ${prefix}_qc_metrics" : ""
-    def duplicate_metrics_output = args.contains("--out-duplicate-metrics") ? "touch ${prefix}.duplicate-metrics.txt" : ""
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.unmapped_1.fastq.gz
-    echo "" | gzip > ${prefix}.unmapped_2.fastq.gztouch ${prefix}Xd.out.bam
+    echo "" | gzip > ${prefix}.unmapped_2.fastq.gz
+    touch ${prefix}.bam
     touch ${prefix}.Log.final.out
-    touch ${prefix}.Log.out
-    touch ${prefix}.Log.progress.out
     touch ${prefix}.sortedByCoord.out.bam
     touch ${prefix}.toTranscriptome.out.bam
     touch ${prefix}.Aligned.unsort.out.bam

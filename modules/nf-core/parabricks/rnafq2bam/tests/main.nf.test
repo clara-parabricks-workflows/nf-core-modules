@@ -7,7 +7,6 @@ nextflow_process {
     tag "gpu"
     tag "modules"
     tag "modules_nfcore"
-    tag "bwa/index"
     tag "parabricks"
     tag "parabricks/rnafq2bam"
     tag "parabricks/stargenomegenerate"
@@ -26,18 +25,6 @@ nextflow_process {
                     [ id:'minigenome_gtf' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
                 ]
-                """
-            }
-        }
-
-        run("BWA_INDEX") {
-            script "../../../bwa/index/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
                 """
             }
         }
@@ -62,10 +49,9 @@ nextflow_process {
                 ])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
                 ])
-				input[2] = BWA_INDEX.out.index
-                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
+                input[2] = PARABRICKS_STARGENOMEGENERATE.out.index
                 """
             }
         }
@@ -75,9 +61,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log_final[0][1]).name,
-                    file(process.out.log_out[0][1]).name,
-                    file(process.out.log_progress[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
+                    bam(process.out.bam[0][1]).getReadsMD5()
                 ).match() }
             )
         }
@@ -100,10 +86,9 @@ nextflow_process {
                 ])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
                 ])
-				input[2] = BWA_INDEX.out.index
-                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
+                input[2] = PARABRICKS_STARGENOMEGENERATE.out.index
                 """
             }
         }
@@ -111,10 +96,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -138,10 +120,9 @@ nextflow_process {
                 ])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
                 ])
-				input[2] = BWA_INDEX.out.index
-                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
+                input[2] = PARABRICKS_STARGENOMEGENERATE.out.index
                 """
             }
         }
@@ -150,9 +131,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    file(process.out.log_final[0][1]).name,
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.bai[0][1]).name,
-                    file(process.out.junction[0][1]).name,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() }
@@ -177,10 +157,9 @@ nextflow_process {
                 ])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
                 ])
-				input[2] = BWA_INDEX.out.index
-                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
+                input[2] = PARABRICKS_STARGENOMEGENERATE.out.index
                 """
             }
         }
@@ -188,10 +167,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
