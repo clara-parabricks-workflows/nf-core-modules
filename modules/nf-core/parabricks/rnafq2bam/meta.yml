@@ -47,6 +47,12 @@ input:
           required to run STAR should be completed by the user beforehand.
         pattern: "*"
         ontologies: []
+  - qc_metrics:
+      type: boolean
+      description: Optionally report QC metrics
+  - mark_duplicates:
+      type: boolean
+      description: Optionally mark duplicates 
 output:
   log_final:
     - - meta:
@@ -76,6 +82,17 @@ output:
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
+          ontologies: []
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.bam.bai":
+          type: file
+          description: Output BAM index file
+          pattern: "*.{bam}.{bai}"
           ontologies: []
   bam_sorted:
     - - meta:
@@ -212,6 +229,28 @@ output:
           type: file
           description: STAR output bedGraph format file(s) (optional)
           pattern: "*.bg"
+          ontologies: []
+  qc_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_qc_metrics":
+          type: file
+          description: Path of the directory where QC metrics will be generated. (optional)
+          pattern: "${prefix}_qc_metrics"
+          ontologies: []
+  duplicate_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.duplicate-metrics.txt":
+          type: file
+          description: Path of duplicate metrics file after marking duplicates. (optional)
+          pattern: "${prefix}.duplicate-metrics.txt"
           ontologies: []
 authors:
   - "@gburnett-nvidia"
