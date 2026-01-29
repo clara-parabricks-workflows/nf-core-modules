@@ -1,0 +1,117 @@
+
+
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\ 
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
+
+    nf-core/tools version 3.4.1 - https://nf-co.re
+    There is a new version of nf-core/tools available! (3.5.1)
+
+
+
+INFO     Setting environment variable '$PROFILE' to Docker as not set otherwise.                                                                                                                
+         To use Singularity set 'export PROFILE=singularity' in your shell before running this command.                                                                                         
+INFO     Generating nf-test snapshot                                                                                                                                                            
+╭─────────────────────────────────────────────────────────────────────────────────────── nf-test output ───────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                                                              │
+│ 🚀 nf-test 0.9.3                                                                                                                                                                             │
+│ https://www.nf-test.com                                                                                                                                                                      │
+│ (c) 2021 - 2024 Lukas Forer and Sebastian Schoenherr                                                                                                                                         │
+│                                                                                                                                                                                              │
+│ Load .nf-test/plugins/nft-bam/0.5.0/nft-bam-0.5.0.jar                                                                                                                                        │
+│ Load .nf-test/plugins/nft-compress/0.1.0/nft-compress-0.1.0.jar                                                                                                                              │
+│ Load .nf-test/plugins/nft-vcf/1.0.7/nft-vcf-1.0.7.jar                                                                                                                                        │
+│ Load .nf-test/plugins/nft-csv/0.1.0/nft-csv-0.1.0.jar                                                                                                                                        │
+│ Load .nf-test/plugins/nft-utils/0.0.7/nft-utils-0.0.7.jar                                                                                                                                    │
+│ Load .nf-test/plugins/nft-fastq/0.0.1/nft-fastq-0.0.1.jar                                                                                                                                    │
+│ Load .nf-test/plugins/nft-anndata/0.1.0/nft-anndata-0.1.0.jar                                                                                                                                │
+│                                                                                                                                                                                              │
+│ Test Process PARABRICKS_RNAFQ2BAM                                                                                                                                                            │
+│                                                                                                                                                                                              │
+│   Test [7b9a47fb] 'homo_sapiens' FAILED (48.282s)                                                                                                                                            │
+│                                                                                                                                                                                              │
+│   Assertion failed:                                                                                                                                                                          │
+│                                                                                                                                                                                              │
+│   2 of 2 assertions failed                                                                                                                                                                   │
+│                                                                                                                                                                                              │
+│   Nextflow stdout:                                                                                                                                                                           │
+│                                                                                                                                                                                              │
+│   ERROR ~ No such file or directory: https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz                     │
+│                                                                                                                                                                                              │
+│    -- Check script '/home/gburnett/nf-core-modules/.nf-test-7b9a47fb6eb12eb64bfe0145427e2642.nf' at line: 51 or see                                                                          │
+│ '/home/gburnett/nf-core-modules/.nf-test/tests/7b9a47fb6eb12eb64bfe0145427e2642/meta/nextflow.log' file for more details                                                                     │
+│   Nextflow stderr:                                                                                                                                                                           │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│ Test Process PARABRICKS_STARFUSION                                                                                                                                                           │
+│                                                                                                                                                                                              │
+│   Test [f07083b7] 'homo_sapiens - single end' FAILED (43.229s)                                                                                                                               │
+│                                                                                                                                                                                              │
+│   Assertion failed:                                                                                                                                                                          │
+│                                                                                                                                                                                              │
+│   2 of 2 assertions failed                                                                                                                                                                   │
+│                                                                                                                                                                                              │
+│   Nextflow stdout:                                                                                                                                                                           │
+│                                                                                                                                                                                              │
+│   ERROR ~ No such file or directory: https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz                     │
+│                                                                                                                                                                                              │
+│    -- Check script '/home/gburnett/nf-core-modules/.nf-test-f07083b7f3c4ddcd04aa5039adb6abe9.nf' at line: 67 or see                                                                          │
+│ '/home/gburnett/nf-core-modules/.nf-test/tests/f07083b7f3c4ddcd04aa5039adb6abe9/meta/nextflow.log' file for more details                                                                     │
+│   Nextflow stderr:                                                                                                                                                                           │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│   Test [ad2a28bd] 'homo_sapiens - stub' FAILED (9.774s)                                                                                                                                      │
+│                                                                                                                                                                                              │
+│   Assertion failed:                                                                                                                                                                          │
+│                                                                                                                                                                                              │
+│   2 of 2 assertions failed                                                                                                                                                                   │
+│                                                                                                                                                                                              │
+│   Nextflow stdout:                                                                                                                                                                           │
+│                                                                                                                                                                                              │
+│   Process `PARABRICKS_RNAFQ2BAM` declares 5 inputs but was called with 4 arguments                                                                                                           │
+│                                                                                                                                                                                              │
+│    -- Check script '/home/gburnett/nf-core-modules/.nf-test-ad2a28bdc33deeab65401c68b77c3d68.nf' at line: 76 or see                                                                          │
+│ '/home/gburnett/nf-core-modules/.nf-test/tests/ad2a28bdc33deeab65401c68b77c3d68/meta/nextflow.log' file for more details                                                                     │
+│   Nextflow stderr:                                                                                                                                                                           │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│                                                                                                                                                                                              │
+│ FAILURE: Executed 3 tests in 101.36s (3 failed)                                                                                                                                              │
+│                                                                                                                                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────────────────────────────── nf-test error ────────────────────────────────────────────────────────────────────────────────────────╮
+│ Assertion failed:                                                                                                                                                                            │
+│                                                                                                                                                                                              │
+│ assert process.success                                                                                                                                                                       │
+│        |       |                                                                                                                                                                             │
+│        |       false                                                                                                                                                                         │
+│        PARABRICKS_RNAFQ2BAM                                                                                                                                                                  │
+│                                                                                                                                                                                              │
+│ java.lang.RuntimeException: Process has no output channels. process.out can not be used.                                                                                                     │
+│ Assertion failed:                                                                                                                                                                            │
+│                                                                                                                                                                                              │
+│ assert process.success                                                                                                                                                                       │
+│        |       |                                                                                                                                                                             │
+│        |       false                                                                                                                                                                         │
+│        PARABRICKS_STARFUSION                                                                                                                                                                 │
+│                                                                                                                                                                                              │
+│ java.lang.RuntimeException: Process has no output channels. process.out can not be used.                                                                                                     │
+│ Assertion failed:                                                                                                                                                                            │
+│                                                                                                                                                                                              │
+│ assert process.success                                                                                                                                                                       │
+│        |       |                                                                                                                                                                             │
+│        |       false                                                                                                                                                                         │
+│        PARABRICKS_STARFUSION                                                                                                                                                                 │
+│                                                                                                                                                                                              │
+│ java.lang.RuntimeException: Process has no output channels. process.out can not be used.                                                                                                     │
+│                                                                                                                                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+CRITICAL Ran, but found errors:                                                                                                                                                                 
+          - nf-test failed                                                                                                                                                                      
